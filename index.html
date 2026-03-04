@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Exam Sahayak</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+--primary: #1976d2;
+--light: #e3f2fd;
+--dark: #0d47a1;
+--success: #43a047;
+--border: #ddd;
+--bg: #f8fafc;
+--card-bg: #ffffff;
+}
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+font-family: 'Roboto', sans-serif;
+}
+body {
+background-color: var(--bg);
+color: #333;
+line-height: 1.5;
+}
+.container {
+max-width: 1600px;
+margin: 0 auto;
+padding: 30px;
+}
+header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 30px;
+padding-bottom: 15px;
+border-bottom: 1px solid #eee;
+}
+.logo {
+font-size: 28px;
+font-weight: 700;
+color: var(--primary);
+}
+.lang-selector {
+display: flex;
+gap: 12px;
+}
+.lang-btn {
+padding: 6px 16px;
+border: 1px solid var(--border);
+border-radius: 20px;
+background: white;
+cursor: pointer;
+font-size: 14px;
+transition: all 0.2s;
+}
+.lang-btn.active {
+background: var(--primary);
+color: white;
+border-color: var(--primary);
+}
+.step-panel {
+background: var(--card-bg);
+border-radius: 12px;
+padding: 30px;
+box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+margin-bottom: 30px;
+position: relative;
+}
+.back-btn {
+position: absolute;
+top: 20px;
+left: 20px;
+background: none;
+border: none;
+font-size: 18px;
+color: var(--primary);
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 6px;
+font-weight: 600;
+}
+.step-title {
+font-size: 22px;
+margin-bottom: 20px;
+color: var(--dark);
+text-align: center;
+}
+.input-field {
+width: 100%;
+padding: 12px;
+border: 1px solid var(--border);
+border-radius: 8px;
+font-size: 16px;
+margin-bottom: 20px;
+}
+.btn {
+padding: 12px 24px;
+border: none;
+border-radius: 8px;
+font-weight: 600;
+cursor: pointer;
+font-size: 16px;
+transition: background 0.3s;
+}
+.btn-primary {
+background: var(--primary);
+color: white;
+}
+.btn-primary:hover {
+background: var(--dark);
+}
+.chip-group {
+display: flex;
+flex-wrap: wrap;
+gap: 12px;
+margin: 12px 0 20px;
+}
+.chip {
+padding: 10px 20px;
+border: 1px solid var(--border);
+border-radius: 30px;
+background: white;
+font-size: 15px;
+cursor: pointer;
+transition: all 0.2s;
+}
+.chip.selected {
+background: var(--light);
+border-color: var(--primary);
+color: var(--primary);
+font-weight: 600;
+}
+.results-section {
+margin-bottom: 40px;
+}
+.section-title {
+font-size: 18px;
+margin: 20px 0 15px;
+color: var(--dark);
+padding-bottom: 8px;
+border-bottom: 1px solid #eee;
+}
+.results-table-container {
+overflow-x: auto;
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+table {
+width: 100%;
+border-collapse: collapse;
+min-width: 1400px;
+}
+th {
+background: var(--light);
+padding: 12px 10px;
+text-align: left;
+font-weight: 600;
+color: var(--dark);
+position: sticky;
+top: 0;
+font-size: 13px;
+}
+td {
+padding: 12px 10px;
+border-bottom: 1px solid #eee;
+vertical-align: top;
+font-size: 13px;
+}
+tr:nth-child(even) {
+background-color: #fafafa;
+}
+.exam-name {
+font-weight: 700;
+color: var(--dark);
+}
+.apply-btn {
+display: inline-block;
+padding: 6px 12px;
+background: var(--success);
+color: white;
+text-decoration: none;
+border-radius: 4px;
+font-size: 13px;
+font-weight: 600;
+margin-top: 6px;
+cursor: pointer;
+}
+.apply-btn:hover {
+background: #2e7d32;
+}
+.fee-cell {
+font-size: 12px;
+line-height: 1.4;
+}
+.hidden {
+display: none;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<div class="logo" id="page-title">Exam Sahayak</div>
+<div class="lang-selector">
+<div class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</div>
+<div class="lang-btn" data-lang="hi" onclick="setLang('hi')">हिंदी</div>
+<div class="lang-btn" data-lang="mr" onclick="setLang('mr')">मराठी</div>
+</div>
+</header>
+<div id="step-name" class="step-panel">
+<h2 class="step-title" id="name-title">Welcome! Please enter your name</h2>
+<p id="name-desc" style="text-align:center; margin-bottom:24px;">We'll use this only for personalization (not stored).</p>
+<input type="text" id="studentName" class="input-field" placeholder="e.g., Anita" />
+<div style="text-align:center;">
+<button class="btn btn-primary" onclick="nextToFilters()">Continue</button>
+</div>
+</div>
+<div id="step-filters" class="step-panel hidden">
+<button class="back-btn" onclick="goToStep('name')">
+← <span id="back-to-name">Back to Name</span>
+</button>
+<h2 class="step-title" id="filter-title">Select Your Details</h2>
+<label id="edu-label">Education Level</label>
+<div class="chip-group" id="grp-edu"></div>
+<label id="stream-label">Stream / Field</label>
+<div class="chip-group" id="grp-stream"></div>
+<div style="text-align:center;">
+<button class="btn btn-primary" onclick="showResults()">Find & Compare Exams</button>
+</div>
+</div>
+<div id="step-results" class="step-panel hidden">
+<button class="back-btn" onclick="goToStep('filters')">
+← <span id="back-to-filters">Back to Filters</span>
+</button>
+<h2 class="step-title" id="results-title">Recommended Exams by Category</h2>
+<div id="results-container"></div>
+</div>
+</div>
+<script>
+// Convert Arabic numerals to Devanagari (for Hindi & Marathi)
+function toDevanagari(str, lang) {
+if (!str || lang === 'en') return str;
+const map = { '0': '०', '1': '१', '2': '२', '3': '३', '4': '४', '5': '५', '6': '६', '7': '७', '8': '८', '9': '९' };
+return str.toString().replace(/\d/g, d => map[d] || d);
+}
+// Parse fee string like "1000/1000/1000/500/500/500"
+function parseFee(feeStr) {
+if (!feeStr || feeStr.includes("NA") || feeStr.includes("uniform")) return null;
+if (feeStr.includes('/')) {
+const parts = feeStr.split('/').map(p => p.trim().replace(/[^0-9]/g, ''));
+if (parts.length >= 6) {
+return {
+general: parts[0] || '—',
+obc: parts[1] || '—',
+ews: parts[2] || '—',
+sc: parts[3] || '—',
+st: parts[4] || '—',
+pwd: parts[5] || '—'
+};
+}
+}
+return null; // fallback for descriptive fees
+}
+// Format fee cell with caste-wise breakdown
+function formatFeeCell(feeObj, lang) {
+if (!feeObj) return "As per official notice";
+const labels = translations[lang].fee_labels;
+const dev = (s) => toDevanagari(s, lang);
+return `
+<div class="fee-cell">
+${labels[0]}: ₹${dev(feeObj.general)}<br>
+${labels[1]}: ₹${dev(feeObj.obc)}<br>
+${labels[2]}: ₹${dev(feeObj.ews)}<br>
+${labels[3]}: ₹${dev(feeObj.sc)}<br>
+${labels[4]}: ₹${dev(feeObj.st)}<br>
+${labels[5]}: ₹${dev(feeObj.pwd)}
+</div>
+`;
+}
+// FULL TRANSLATIONS
+const translations = {
+en: {
+title: "Exam Sahayak",
+name_title: "Welcome! Please enter your name",
+name_desc: "We'll use this only for personalization (not stored).",
+filter_title: "Select Your Details",
+edu_label: "Education Level",
+stream_label: "Stream / Field",
+results_title: "Recommended Exams",
+back_to_name: "Back to Name",
+back_to_filters: "Back to Filters",
+apply_now: "Apply Now",
+continue_btn: "Continue",
+find_exams_btn: "Find Exams",
+placeholder_name: "e.g., Anita",
+levels: { "12th": "12th Standard", "grad": "Graduation", "post_grad": "Post Graduation" },
+streams: {
+"any": "All Streams",
+"ug": "Undergraduate (UG)",
+"management": "Management (MBA)",
+"upsc": "UPSC / Civil Services",
+"banking": "Banking Exams",
+"ssc": "SSC Exams",
+"regulatory": "Regulatory Bodies",
+"state_psc": "State PSC",
+"professional": "Professional (CA/CS)"
+},
+fee_labels: ["General", "OBC", "EWS", "SC", "ST", "PwD"],
+table_headers: [
+"Exam", "Eligibility", "Min Marks", "Age Limit", "Conducted By",
+"Level", "Difficulty", "Fee (₹)", "Career Path", "Mode", "Apply"
+],
+no_results: "No exams found for this selection."
+},
+hi: {
+title: "परीक्षा सहायक",
+name_title: "स्वागत है! कृपया अपना नाम दर्ज करें",
+name_desc: "हम इसे केवल व्यक्तिगतकरण के लिए उपयोग करेंगे।",
+filter_title: "अपना विवरण चुनें",
+edu_label: "शैक्षणिक स्तर",
+stream_label: "स्ट्रीम / क्षेत्र",
+results_title: "अनुशंसित परीक्षाएँ",
+back_to_name: "नाम पर वापस",
+back_to_filters: "फ़िल्टर पर वापस",
+apply_now: "अभी आवेदन करें",
+continue_btn: "जारी रखें",
+find_exams_btn: "परीक्षाएँ खोजें",
+placeholder_name: "उदा., अनिता",
+levels: { "12th": "१२वीं कक्षा", "grad": "स्नातक", "post_grad": "स्नातकोत्तर" },
+streams: {
+"any": "सभी",
+"ug": "स्नातक (यूजी)",
+"management": "प्रबंधन (एमबीए)",
+"upsc": "यूपीएससी / सिविल सेवा",
+"banking": "बैंकिंग परीक्षाएँ",
+"ssc": "एसएससी परीक्षाएँ",
+"regulatory": "नियामक निकाय",
+"state_psc": "राज्य लोक सेवा आयोग",
+"professional": "पेशेवर (सीए/सीएस)"
+},
+fee_labels: ["सामान्य", "ओबीसी", "ईडब्ल्यूएस", "अनुसूचित जाति", "अनुसूचित जनजाति", "पीडब्ल्यूडी"],
+table_headers: [
+"परीक्षा", "पात्रता", "न्यूनतम अंक", "आयु सीमा", "आयोजक संस्था",
+"स्तर", "कठिनाई", "शुल्क (₹)", "करियर पथ", "मोड", "आवेदन"
+],
+no_results: "इस चयन के लिए कोई परीक्षा नहीं मिली।"
+},
+mr: {
+title: "परीक्षा सहाय्यक",
+name_title: "स्वागत आहे! कृपया तुमचे नाव टाका",
+name_desc: "आम्ही हे फक्त वैयक्तिकरणासाठी वापरू.",
+filter_title: "तुमचा तपशील निवडा",
+edu_label: "शैक्षणिक पातळी",
+stream_label: "प्रवाह / क्षेत्र",
+results_title: "शिफारस केलेल्या परीक्षा",
+back_to_name: "नावावर परत",
+back_to_filters: "फिल्टरवर परत",
+apply_now: "आता अर्ज करा",
+continue_btn: "पुढे जा",
+find_exams_btn: "परीक्षा शोधा",
+placeholder_name: "उदा., अनिता",
+levels: { "12th": "१२वी इयत्ता", "grad": "पदवी", "post_grad": "पदव्युत्तर" },
+streams: {
+"any": "सर्व",
+"ug": "पदवीपूर्व (यूजी)",
+"management": "व्यवस्थापन (एमबीए)",
+"upsc": "यूपीएससी / नागरी सेवा",
+"banking": "बँकिंग परीक्षा",
+"ssc": "एसएससी परीक्षा",
+"regulatory": "नियामक संस्था",
+"state_psc": "राज्य लोकसेवा आयोग",
+"professional": "व्यावसायिक (सीए/सीएस)"
+},
+fee_labels: ["सामान्य", "ओबीसी", "ईडब्ल्यूएस", "अनुसूचित जाती", "अनुसूचित जमाती", "पीडब्ल्यूडी"],
+table_headers: [
+"परीक्षा", "पात्रता", "किमान गुण", "वय मर्यादा", "आयोजक संस्था",
+"स्तर", "अडचण", "शुल्क (₹)", "करिअर मार्ग", "पद्धत", "अर्ज करा"
+],
+no_results: "या निवडीसाठी कोणतीही परीक्षा सापडली नाही."
+}
+};
+// USER STATE
+let currentLang = 'en';
+let selectedFilters = {
+level: '12th',
+stream: 'any'
+};
+// RENDER CHIPS BASED ON LANGUAGE
+function renderChips() {
+const t = translations[currentLang];
+// Clean containers first
+['grp-edu', 'grp-stream'].forEach(id => {
+const el = document.getElementById(id);
+if (el) el.innerHTML = '';
+});
+// Education Levels
+['12th', 'grad', 'post_grad'].forEach(key => {
+const chip = document.createElement('div');
+chip.className = `chip ${selectedFilters.level === key ? 'selected' : ''}`;
+chip.textContent = t.levels[key];
+chip.dataset.value = key;
+chip.onclick = () => selectChip(chip, 'level');
+const container = document.getElementById('grp-edu');
+if (container) container.appendChild(chip);
+});
+// Streams
+Object.keys(translations.en.streams).forEach(key => {
+const chip = document.createElement('div');
+chip.className = `chip ${selectedFilters.stream === key ? 'selected' : ''}`;
+chip.textContent = t.streams[key];
+chip.dataset.value = key;
+chip.onclick = () => selectChip(chip, 'stream');
+const container = document.getElementById('grp-stream');
+if (container) container.appendChild(chip);
+});
+}
+// UPDATE ALL UI TEXT IN CURRENT LANGUAGE
+function updateAllText() {
+const t = translations[currentLang];
+document.getElementById('page-title').textContent = t.title;
+document.getElementById('name-title').textContent = t.name_title;
+document.getElementById('name-desc').textContent = t.name_desc;
+document.getElementById('filter-title').textContent = t.filter_title;
+document.getElementById('edu-label').textContent = t.edu_label;
+document.getElementById('stream-label').textContent = t.stream_label;
+document.getElementById('results-title').textContent = t.results_title;
+document.getElementById('back-to-name').textContent = t.back_to_name;
+document.getElementById('back-to-filters').textContent = t.back_to_filters;
+// Buttons & placeholders
+document.querySelector('#step-name .btn-primary').textContent = t.continue_btn;
+const findBtn = document.querySelector('#step-filters .btn-primary');
+if (findBtn) findBtn.textContent = t.find_exams_btn;
+document.getElementById('studentName').placeholder = t.placeholder_name;
+renderChips();
+// Re-render results if visible
+if (!document.getElementById('step-results').classList.contains('hidden')) {
+showResults();
+}
+}
+// LANGUAGE SWITCH
+function setLang(lang) {
+currentLang = lang;
+document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
+updateAllText();
+}
+// CHIP SELECTION
+function selectChip(el, group) {
+const parent = el.parentElement;
+parent.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+el.classList.add('selected');
+const val = el.dataset.value;
+if (group === 'level') selectedFilters.level = val;
+if (group === 'stream') selectedFilters.stream = val;
+}
+// NAVIGATION
+function goToStep(step) {
+document.getElementById('step-name').classList.add('hidden');
+document.getElementById('step-filters').classList.add('hidden');
+document.getElementById('step-results').classList.add('hidden');
+if (step === 'name') {
+document.getElementById('step-name').classList.remove('hidden');
+} else if (step === 'filters') {
+document.getElementById('step-filters').classList.remove('hidden');
+renderChips();
+}
+}
+// NEXT TO FILTERS
+function nextToFilters() {
+const name = document.getElementById('studentName').value.trim();
+if (!name) {
+alert("Please enter your name.");
+return;
+}
+goToStep('filters');
+}
+// FULL EXAM DATA
+const examGroups = {
+// ➤ UG EXAMS
+ug: [
+{
+name: { en: "JEE Main", hi: "जेईई मेन", mr: "जेईई मेन" },
+minEdu: { en: "12th (PCM)", hi: "12वीं (पीसीएम)", mr: "12वी (पीसीएम)" },
+minMarks: { en: "75%", hi: "75%", mr: "75%" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "NTA", hi: "राष्ट्रीय परीक्षण एजेंसी", mr: "राष्ट्रीय चाचणी एजन्सी" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "1000/1000/1000/500/500/500",
+career: { en: "B.Tech / B.E / B.Arch", hi: "बी.टेक / बी.ई / बी.आर्क", mr: "बी.टेक / बी.ई / बी.आर्क" },
+link: "https://jeemain.nta.nic.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "NEET UG", hi: "नीट यूजी", mr: "नीट यूजी" },
+minEdu: { en: "12th (PCB)", hi: "12वीं (पीसीबी)", mr: "12वी (पीसीबी)" },
+minMarks: { en: "50% Gen, 40% Res", hi: "सामान्य 50%, आरक्षित 40%", mr: "सामान्य 50%, आरक्षित 40%" },
+age: { en: "17–25", hi: "17–25", mr: "17–25" },
+body: { en: "NTA", hi: "राष्ट्रीय परीक्षण एजेंसी", mr: "राष्ट्रीय चाचणी एजन्सी" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Very High", hi: "अत्यधिक उच्च", mr: "अत्यंत उच्च" },
+fee: "1700/1600/1600/1000/1000/1000",
+career: { en: "MBBS / BDS / AYUSH", hi: "एमबीबीएस / बीडीएस / आयुष", mr: "एमबीबीएस / बीडीएस / आयुष" },
+link: "https://neet.nta.nic.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "CUET UG", hi: "सीयूईटी यूजी", mr: "सीयूईटी यूजी" },
+minEdu: { en: "12th (Any stream)", hi: "12वीं (कोई भी स्ट्रीम)", mr: "12वी (कोणताही प्रवाह)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "NTA", hi: "राष्ट्रीय परीक्षण एजेंसी", mr: "राष्ट्रीय चाचणी एजन्सी" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium", hi: "मध्यम", mr: "मध्यम" },
+fee: "1000/900/900/800/800/800",
+career: { en: "BA / BSc / BCom / BBA", hi: "बीए / बीएससी / बीकॉम / बीबीए", mr: "बीए / बीएससी / बीकॉम / बीबीए" },
+link: "https://cuet.nta.nic.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "MHT-CET", hi: "एमएचटी-सीईटी", mr: "एमएचटी-सीईटी" },
+minEdu: { en: "12th (PCM/PCB)", hi: "12वीं (पीसीएम/पीसीबी)", mr: "12वी (पीसीएम/पीसीबी)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "State CET Cell MH", hi: "राज्य सीईटी सेल, महाराष्ट्र", mr: "राज्य सीईटी सेल, महाराष्ट्र" },
+level: { en: "State", hi: "राज्य", mr: "राज्य" },
+diff: { en: "Medium–High", hi: "मध्यम–उच्च", mr: "मध्यम–उच्च" },
+fee: "1300/800/800/800/800/800",
+career: { en: "B.Tech / B.Pharm", hi: "बी.टेक / बी.फार्म", mr: "बी.टेक / बी.फार्म" },
+link: "https://cetcell.maharashtra.gov.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "CLAT", hi: "क्लैट", mr: "क्लॅट" },
+minEdu: { en: "12th (Any)", hi: "12वीं (कोई भी)", mr: "12वी (कोणतीही)" },
+minMarks: { en: "45% Gen, 40% Res", hi: "सामान्य 45%, आरक्षित 40%", mr: "सामान्य 45%, आरक्षित 40%" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "NLU Consortium", hi: "एनएलयू कंसोर्टियम", mr: "एनएलयू कन्सोर्टियम" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "4000/3500/3500/3500/3500/3500",
+career: { en: "BA LLB / BBA LLB", hi: "बीए एलएलबी / बीबीए एलएलबी", mr: "बीए एलएलबी / बीबीए एलएलबी" },
+link: "https://consortiumofnlus.ac.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "AILET", hi: "एआईएलईटी", mr: "एआयएलईटी" },
+minEdu: { en: "12th (Any)", hi: "12वीं (कोई भी)", mr: "12वी (कोणतीही)" },
+minMarks: { en: "45%", hi: "45%", mr: "45%" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "NLU Delhi", hi: "एनएलयू दिल्ली", mr: "एनएलयू दिल्ली" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "3050/3050/3050/1050/1050/1050",
+career: { en: "Law", hi: "कानून", mr: "कायदा" },
+link: "https://nludelhi.ac.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "UCEED", hi: "यूसीईईडी", mr: "यूसीईईडी" },
+minEdu: { en: "12th (Any)", hi: "12वीं (कोई भी)", mr: "12वी (कोणतीही)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "20–25", hi: "20–25", mr: "20–25" },
+body: { en: "IIT Bombay", hi: "आईआईटी बॉम्बे", mr: "आयआयटी बॉम्बे" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "3900/3900/3900/1900/1900/1900",
+career: { en: "B.Des", hi: "बी.डेज़", mr: "बी.डेज़" },
+link: "https://www.uceed.iitb.ac.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "NIFT Entrance", hi: "एनआईएफटी प्रवेश", mr: "एनआयएफटी प्रवेश" },
+minEdu: { en: "12th (Any)", hi: "12वीं (कोई भी)", mr: "12वी (कोणतीही)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "Max 24 (Gen)", hi: "अधिकतम 24", mr: "जास्तीत जास्त 24" },
+body: { en: "NIFT", hi: "एनआईएफटी", mr: "एनआयएफटी" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "3000/3000/3000/1500/1500/1500",
+career: { en: "Fashion Design", hi: "फैशन डिज़ाइन", mr: "फॅशन डिझाइन" },
+link: "https://nift.ac.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "NATA", hi: "नाटा", mr: "नाटा" },
+minEdu: { en: "12th (PCM)", hi: "12वीं (पीसीएम)", mr: "12वी (पीसीएम)" },
+minMarks: { en: "50%", hi: "50%", mr: "50%" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "COA", hi: "सीओए", mr: "सीओए" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium", hi: "मध्यम", mr: "मध्यम" },
+fee: "2000/1500/1500/1000/1000/1000",
+career: { en: "B.Arch", hi: "बी.आर्क", mr: "बी.आर्क" },
+link: "https://nata.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "IISER Aptitude Test", hi: "आईआईएसईआर प्रवेश परीक्षा", mr: "आयआयएसईआर प्रवेश परीक्षा" },
+minEdu: { en: "12th (Science)", hi: "12वीं (विज्ञान)", mr: "12वी (विज्ञान)" },
+minMarks: { en: "60%", hi: "60%", mr: "60%" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "IISERs", hi: "आईआईएसईआर", mr: "आयआयएसईआर" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "2000/1000/1000/1000/1000/1000",
+career: { en: "BS / Research", hi: "बीएस / अनुसंधान", mr: "बीएस / संशोधन" },
+link: "https://www.iiseradmission.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+}
+],
+// ➤ MANAGEMENT
+management: [
+{
+name: { en: "CAT", hi: "सीएटी", mr: "सीएटी" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "50% (45% reserved)", hi: "50% (45% आरक्षित)", mr: "50% (45% आरक्षित)" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "IIMs", hi: "भारतीय प्रबंधन संस्थान", mr: "भारतीय व्यवस्थापन संस्था" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "2400/2400/2400/1200/1200/1200",
+career: { en: "MBA/PGDM", hi: "एमबीए/पीजीडीएम", mr: "एमबीए/पीजीडीएम" },
+link: "https://iimcat.ac.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "XAT", hi: "एक्सएटी", mr: "एक्सएटी" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "XLRI", hi: "एक्सएलआरआई", mr: "एक्सएलआरआय" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "2100/2100/2100/2100/2100/2100",
+career: { en: "MBA/PGDM", hi: "एमबीए/पीजीडीएम", mr: "एमबीए/पीजीडीएम" },
+link: "https://xatonline.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "GMAT", hi: "जीमैट", mr: "जीमॅट" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "No fixed %", hi: "कोई निश्चित % नहीं", mr: "कोणतीही निश्चित % नाही" },
+age: { en: "18+", hi: "18+", mr: "18+" },
+body: { en: "GMAC", hi: "जीएमएसी", mr: "जीएमएसी" },
+level: { en: "International", hi: "अंतर्राष्ट्रीय", mr: "आंतरराष्ट्रीय" },
+diff: { en: "Medium", hi: "मध्यम", mr: "मध्यम" },
+fee: "23000/23000/23000/23000/23000/23000",
+career: { en: "Global MBA", hi: "ग्लोबल एमबीए", mr: "ग्लोबल एमबीए" },
+link: "https://www.mba.com",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "CMAT", hi: "सीएमएटी", mr: "सीएमएटी" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "50% (45% reserved)", hi: "50% (45% आरक्षित)", mr: "50% (45% आरक्षित)" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "NTA", hi: "राष्ट्रीय परीक्षण एजेंसी", mr: "राष्ट्रीय चाचणी एजन्सी" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium", hi: "मध्यम", mr: "मध्यम" },
+fee: "1600/1600/1600/800/800/800",
+career: { en: "MBA/PGDM", hi: "एमबीए/पीजीडीएम", mr: "एमबीए/पीजीडीएम" },
+link: "https://cmat.nta.nic.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "SNAP", hi: "स्नैप", mr: "स्नॅप" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "50% (45% reserved)", hi: "50% (45% आरक्षित)", mr: "50% (45% आरक्षित)" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "Symbiosis", hi: "सिंबायोसिस", mr: "सिंबायोसिस" },
+level: { en: "University", hi: "विश्वविद्यालय", mr: "विद्यापीठ" },
+diff: { en: "Medium", hi: "मध्यम", mr: "मध्यम" },
+fee: "2250/2250/2250/2250/2250/2250",
+career: { en: "MBA/PGDM", hi: "एमबीए/पीजीडीएम", mr: "एमबीए/पीजीडीएम" },
+link: "https://www.snaptest.org",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+}
+],
+// ➤ UPSC
+upsc: [
+{
+name: { en: "UPSC CSE", hi: "यूपीएससी सीएसई", mr: "यूपीएससी सीएसई" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "21–32 (Gen)", hi: "21–32 (सामान्य)", mr: "21–32 (सामान्य)" },
+body: { en: "UPSC", hi: "संघ लोक सेवा आयोग", mr: "संघ लोकसेवा आयोग" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Very High", hi: "अत्यधिक उच्च", mr: "अत्यंत उच्च" },
+fee: "100/100/100/0/0/0",
+career: { en: "IAS, IPS, IFS, IRS", hi: "आईएएस, आईपीएस, आईएफएस", mr: "आयएएस, आयपीएस, आयएफएस" },
+link: "https://upsconline.nic.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "UPSC IFoS", hi: "यूपीएससी आईएफओएस", mr: "यूपीएससी आयएफओएस" },
+minEdu: { en: "Bachelor's (Sci/Engg)", hi: "स्नातक (विज्ञान/इंजी)", mr: "पदवी (विज्ञान/अभियांत्रिकी)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "21–32 (Gen)", hi: "21–32 (सामान्य)", mr: "21–32 (सामान्य)" },
+body: { en: "UPSC", hi: "संघ लोक सेवा आयोग", mr: "संघ लोकसेवा आयोग" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Very High", hi: "अत्यधिक उच्च", mr: "अत्यंत उच्च" },
+fee: "100/100/100/0/0/0",
+career: { en: "Indian Forest Service", hi: "भारतीय वन सेवा", mr: "भारतीय वनसेवा" },
+link: "https://upsconline.nic.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "UPSC ESE/IES", hi: "यूपीएससी ईएसई/आईईएस", mr: "यूपीएससी ईएसई/आईईएस" },
+minEdu: { en: "Engineering Degree", hi: "इंजीनियरिंग डिग्री", mr: "अभियांत्रिकी पदवी" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "21–30 (Gen)", hi: "21–30 (सामान्य)", mr: "21–30 (सामान्य)" },
+body: { en: "UPSC", hi: "संघ लोक सेवा आयोग", mr: "संघ लोकसेवा आयोग" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Very High", hi: "अत्यधिक उच्च", mr: "अत्यंत उच्च" },
+fee: "200/200/200/0/0/0",
+career: { en: "Engineering Services", hi: "इंजीनियरिंग सेवाएं", mr: "अभियांत्रिकी सेवा" },
+link: "https://upsconline.nic.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "UPSC CDS", hi: "यूपीएससी सीडीएस", mr: "यूपीएससी सीडीएस" },
+minEdu: { en: "Bachelor's degree", hi: "स्नातक डिग्री", mr: "पदवी" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "19–25", hi: "19–25", mr: "19–25" },
+body: { en: "UPSC", hi: "संघ लोक सेवा आयोग", mr: "संघ लोकसेवा आयोग" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "200/200/200/0/0/0",
+career: { en: "Armed Forces Officer", hi: "सशस्त्र बल अधिकारी", mr: "सशस्त्र दल अधिकारी" },
+link: "https://upsconline.nic.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "UPSC CAPF", hi: "यूपीएससी सीएपीएफ", mr: "यूपीएससी सीएपीएफ" },
+minEdu: { en: "Bachelor's degree", hi: "स्नातक डिग्री", mr: "पदवी" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "20–25 (Gen)", hi: "20–25 (सामान्य)", mr: "20–25 (सामान्य)" },
+body: { en: "UPSC", hi: "संघ लोक सेवा आयोग", mr: "संघ लोकसेवा आयोग" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "200/200/200/0/0/0",
+career: { en: "Assistant Commandant", hi: "सहायक कमांडेंट", mr: "सहायक कमांडंट" },
+link: "https://upsconline.nic.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "UPSC EPFO", hi: "यूपीएससी ईपीएफओ", mr: "यूपीएससी ईपीएफओ" },
+minEdu: { en: "Bachelor's degree", hi: "स्नातक डिग्री", mr: "पदवी" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "Max 30", hi: "अधिकतम 30", mr: "जास्तीत जास्त 30" },
+body: { en: "UPSC", hi: "संघ लोक सेवा आयोग", mr: "संघ लोकसेवा आयोग" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "25/25/25/0/0/0",
+career: { en: "Enforcement Officer", hi: "प्रवर्तन अधिकारी", mr: "अंमलबजावणी अधिकारी" },
+link: "https://upsconline.nic.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+}
+],
+// ➤ BANKING
+banking: [
+{
+name: { en: "SBI PO", hi: "एसबीआई पीओ", mr: "एसबीआय पीओ" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "21–30 (Gen)", hi: "21–30 (सामान्य)", mr: "21–30 (सामान्य)" },
+body: { en: "SBI", hi: "भारतीय स्टेट बैंक", mr: "स्टेट बँक ऑफ इंडिया" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "750/750/750/0/0/0",
+career: { en: "Probationary Officer", hi: "प्रशिक्षु अधिकारी", mr: "प्रशिक्षणाधीन अधिकारी" },
+link: "https://sbi.co.in/web/careers",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "SBI Clerk", hi: "एसबीआई क्लर्क", mr: "एसबीआय लिपिक" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "20–28 (Gen)", hi: "20–28 (सामान्य)", mr: "20–28 (सामान्य)" },
+body: { en: "SBI", hi: "भारतीय स्टेट बैंक", mr: "स्टेट बँक ऑफ इंडिया" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium", hi: "मध्यम", mr: "मध्यम" },
+fee: "750/750/750/0/0/0",
+career: { en: "Clerk / Junior Associate", hi: "लिपिक", mr: "लिपिक" },
+link: "https://sbi.co.in/web/careers",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "IBPS PO", hi: "आईबीपीएस पीओ", mr: "आयबीपीएस पीओ" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "20–30 (Gen)", hi: "20–30 (सामान्य)", mr: "20–30 (सामान्य)" },
+body: { en: "IBPS", hi: "आईबीपीएस", mr: "आयबीपीएस" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "850/850/850/175/175/175",
+career: { en: "Probationary Officer", hi: "प्रशिक्षु अधिकारी", mr: "प्रशिक्षणाधीन अधिकारी" },
+link: "https://www.ibps.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "IBPS Clerk", hi: "आईबीपीएस क्लर्क", mr: "आयबीपीएस लिपिक" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "20–28 (Gen)", hi: "20–28 (सामान्य)", mr: "20–28 (सामान्य)" },
+body: { en: "IBPS", hi: "आईबीपीएस", mr: "आयबीपीएस" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium", hi: "मध्यम", mr: "मध्यम" },
+fee: "850/850/850/175/175/175",
+career: { en: "Clerk", hi: "लिपिक", mr: "लिपिक" },
+link: "https://www.ibps.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "IBPS SO", hi: "आईबीपीएस एसओ", mr: "आयबीपीएस एसओ" },
+minEdu: { en: "Degree (Role specific)", hi: "डिग्री (भूमिका विशिष्ट)", mr: "पदवी (विशिष्ट)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "20–30 (Gen)", hi: "20–30 (सामान्य)", mr: "20–30 (सामान्य)" },
+body: { en: "IBPS", hi: "आईबीपीएस", mr: "आयबीपीएस" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "850/850/850/175/175/175",
+career: { en: "Specialist Officer (IT/Law)", hi: "विशेषज्ञ अधिकारी", mr: "विशेषज्ञ अधिकारी" },
+link: "https://www.ibps.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "RRB PO", hi: "आरआरबी पीओ", mr: "आरआरबी पीओ" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "18–30 (Gen)", hi: "18–30 (सामान्य)", mr: "18–30 (सामान्य)" },
+body: { en: "IBPS", hi: "आईबीपीएस", mr: "आयबीपीएस" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium–High", hi: "मध्यम–उच्च", mr: "मध्यम–उच्च" },
+fee: "850/850/850/175/175/175",
+career: { en: "Officer Scale-I", hi: "अधिकारी स्केल-I", mr: "अधिकारी स्केल-I" },
+link: "https://www.ibps.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "RBI Assistant", hi: "आरबीआई असिस्टेंट", mr: "आरबीआय सहाय्यक" },
+minEdu: { en: "Bachelor's degree", hi: "स्नातक डिग्री", mr: "पदवी" },
+minMarks: { en: "50% Gen", hi: "सामान्य 50%", mr: "सामान्य 50%" },
+age: { en: "20–28 (Gen)", hi: "20–28 (सामान्य)", mr: "20–28 (सामान्य)" },
+body: { en: "RBI", hi: "भारतीय रिज़र्व बैंक", mr: "भारतीय रिझर्व्ह बँक" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium–High", hi: "मध्यम–उच्च", mr: "मध्यम–उच्च" },
+fee: "450/450/450/50/50/50",
+career: { en: "Assistant", hi: "सहायक", mr: "सहाय्यक" },
+link: "https://www.rbi.org.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "LIC AAO", hi: "एलआईसी एएओ", mr: "एलआयसी एएओ" },
+minEdu: { en: "Bachelor's degree", hi: "स्नातक डिग्री", mr: "पदवी" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "21–30 (Gen)", hi: "21–30 (सामान्य)", mr: "21–30 (सामान्य)" },
+body: { en: "LIC", hi: "एलआईसी", mr: "एलआयसी" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "700/700/700/85/85/85",
+career: { en: "Assistant Administrative Officer", hi: "सहायक प्रशासनिक अधिकारी", mr: "सहायक प्रशासकीय अधिकारी" },
+link: "https://licindia.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+}
+],
+// ➤ SSC
+ssc: [
+{
+name: { en: "SSC CGL", hi: "एसएससी सीजीएल", mr: "एसएससी सीजीएल" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "18–32 (Varies)", hi: "18–32 (विभिन्न)", mr: "18–32 (विविध)" },
+body: { en: "SSC", hi: "कर्मचारी चयन आयोग", mr: "कर्मचारी निवड आयोग" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "100/100/100/0/0/0",
+career: { en: "Group B & C Govt Jobs", hi: "ग्रुप बी और सी सरकारी नौकरियाँ", mr: "गट बी आणि सी सरकारी नोकऱ्या" },
+link: "https://ssc.nic.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "SSC CHSL", hi: "एसएससी सीएचएसएल", mr: "एसएससी सीएचएसएल" },
+minEdu: { en: "12th Pass", hi: "12वीं उत्तीर्ण", mr: "12वी उत्तीर्ण" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "18–27 (Gen)", hi: "18–27 (सामान्य)", mr: "18–27 (सामान्य)" },
+body: { en: "SSC", hi: "कर्मचारी चयन आयोग", mr: "कर्मचारी निवड आयोग" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium", hi: "मध्यम", mr: "मध्यम" },
+fee: "100/100/100/0/0/0",
+career: { en: "Clerk / DEO", hi: "क्लर्क / डीईओ", mr: "लिपिक / डीईओ" },
+link: "https://ssc.nic.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "SSC CPO", hi: "एसएससी सीपीओ", mr: "एसएससी सीपीओ" },
+minEdu: { en: "Bachelor's degree", hi: "स्नातक डिग्री", mr: "पदवी" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "20–25 (Gen)", hi: "20–25 (सामान्य)", mr: "20–25 (सामान्य)" },
+body: { en: "SSC", hi: "कर्मचारी चयन आयोग", mr: "कर्मचारी निवड आयोग" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium–High", hi: "मध्यम–उच्च", mr: "मध्यम–उच्च" },
+fee: "100/100/100/0/0/0",
+career: { en: "Sub-Inspector (Police/CAPF)", hi: "सब-इंस्पेक्टर", mr: "सब-इन्स्पेक्टर" },
+link: "https://ssc.nic.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "SSC GD", hi: "एसएससी जीडी", mr: "एसएससी जीडी" },
+minEdu: { en: "10th Pass", hi: "10वीं उत्तीर्ण", mr: "10वी उत्तीर्ण" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "18–23 (Gen)", hi: "18–23 (सामान्य)", mr: "18–23 (सामान्य)" },
+body: { en: "SSC", hi: "कर्मचारी चयन आयोग", mr: "कर्मचारी निवड आयोग" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium", hi: "मध्यम", mr: "मध्यम" },
+fee: "100/100/100/0/0/0",
+career: { en: "Constable", hi: "कांस्टेबल", mr: "कॉन्स्टेबल" },
+link: "https://ssc.nic.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "SSC Stenographer", hi: "एसएससी स्टेनोग्राफर", mr: "एसएससी स्टेनोग्राफर" },
+minEdu: { en: "12th Pass", hi: "12वीं उत्तीर्ण", mr: "12वी उत्तीर्ण" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "18–30 (Gr C) / 27 (Gr D)", hi: "18–30 (Gr C) / 27 (Gr D)", mr: "18–30 (Gr C) / 27 (Gr D)" },
+body: { en: "SSC", hi: "कर्मचारी चयन आयोग", mr: "कर्मचारी निवड आयोग" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium", hi: "मध्यम", mr: "मध्यम" },
+fee: "100/100/100/0/0/0",
+career: { en: "Stenographer", hi: "आशुलिपिक", mr: "लघुलेखक" },
+link: "https://ssc.nic.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+}
+],
+// ➤ REGULATORY
+regulatory: [
+{
+name: { en: "RBI Grade B", hi: "आरबीआई ग्रेड बी", mr: "आरबीआय ग्रेड बी" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "60% Gen, 50% SC/ST", hi: "सामान्य 60%, एससी/एसटी 50%", mr: "सामान्य 60%, एससी/एसटी 50%" },
+age: { en: "21–30 (Gen)", hi: "21–30 (सामान्य)", mr: "21–30 (सामान्य)" },
+body: { en: "RBI", hi: "भारतीय रिज़र्व बैंक", mr: "भारतीय रिझर्व्ह बँक" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Very High", hi: "अत्यधिक उच्च", mr: "अत्यंत उच्च" },
+fee: "850/850/850/100/100/100",
+career: { en: "Manager (RBI)", hi: "प्रबंधक (आरबीआई)", mr: "व्यवस्थापक (आरबीआय)" },
+link: "https://www.rbi.org.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "SEBI Grade A", hi: "सेबी ग्रेड ए", mr: "सेबी ग्रेड ए" },
+minEdu: { en: "Master's/Law/Engg", hi: "स्नातकोत्तर/कानून/इंजी", mr: "पदव्युत्तर/कायदा/अभियांत्रिकी" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "Max 30", hi: "अधिकतम 30", mr: "जास्तीत जास्त 30" },
+body: { en: "SEBI", hi: "सेबी", mr: "सेबी" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Very High", hi: "अत्यधिक उच्च", mr: "अत्यंत उच्च" },
+fee: "1000/1000/1000/100/100/100",
+career: { en: "Assistant Manager", hi: "सहायक प्रबंधक", mr: "सहायक व्यवस्थापक" },
+link: "https://www.sebi.gov.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "NABARD Grade A", hi: "नाबार्ड ग्रेड ए", mr: "नाबार्ड ग्रेड ए" },
+minEdu: { en: "Bachelor's degree", hi: "स्नातक डिग्री", mr: "पदवी" },
+minMarks: { en: "60% Gen, 50% SC/ST", hi: "सामान्य 60%", mr: "सामान्य 60%" },
+age: { en: "21–30 (Gen)", hi: "21–30 (सामान्य)", mr: "21–30 (सामान्य)" },
+body: { en: "NABARD", hi: "नाबार्ड", mr: "नाबार्ड" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "800/800/800/150/150/150",
+career: { en: "Assistant Manager (Rural Dev)", hi: "सहायक प्रबंधक", mr: "सहायक व्यवस्थापक" },
+link: "https://www.nabard.org",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "IRDAI Grade A", hi: "आईआरडीएआई ग्रेड ए", mr: "आयआरडीएआय ग्रेड ए" },
+minEdu: { en: "Bachelor's degree", hi: "स्नातक डिग्री", mr: "पदवी" },
+minMarks: { en: "60% Gen", hi: "सामान्य 60%", mr: "सामान्य 60%" },
+age: { en: "21–30 (Gen)", hi: "21–30 (सामान्य)", mr: "21–30 (सामान्य)" },
+body: { en: "IRDAI", hi: "आईआरडीएआई", mr: "आयआरडीएआय" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "750/750/750/100/100/100",
+career: { en: "Insurance Regulator", hi: "बीमा नियामक", mr: "विमा नियामक" },
+link: "https://www.irdai.gov.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+}
+],
+// ➤ STATE PSC
+state_psc: [
+{
+name: { en: "MPSC State Services", hi: "एमपीएससी राज्य सेवा", mr: "एमपीएससी राज्यसेवा" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "19–38 (Gen)", hi: "19–38 (सामान्य)", mr: "19–38 (सामान्य)" },
+body: { en: "MPSC", hi: "महाराष्ट्र लोक सेवा आयोग", mr: "महाराष्ट्र लोकसेवा आयोग" },
+level: { en: "State", hi: "राज्य", mr: "राज्य" },
+diff: { en: "Very High", hi: "अत्यधिक उच्च", mr: "अत्यंत उच्च" },
+fee: "394/294/294/194/194/194",
+career: { en: "Deputy Collector, DSP", hi: "उपजिलाधिकारी, डीएसपी", mr: "उपजिल्हाधिकारी, डीएसपी" },
+link: "https://mpsc.gov.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "UPPSC PCS", hi: "यूपीपीएससी पीसीएस", mr: "यूपीपीएससी पीसीएस" },
+minEdu: { en: "Bachelor's degree (Any)", hi: "स्नातक डिग्री (कोई भी)", mr: "पदवी (कोणतीही)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "21–40 (Gen)", hi: "21–40 (सामान्य)", mr: "21–40 (सामान्य)" },
+body: { en: "UPPSC", hi: "यूपीपीएससी", mr: "यूपीपीएससी" },
+level: { en: "State", hi: "राज्य", mr: "राज्य" },
+diff: { en: "Very High", hi: "अत्यधिक उच्च", mr: "अत्यंत उच्च" },
+fee: "125/125/125/65/65/25",
+career: { en: "SDM, DSP", hi: "एसडीएम, डीएसपी", mr: "एसडीएम, डीएसपी" },
+link: "https://uppsc.up.nic.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "TNPSC Group I", hi: "टीएनपीएससी ग्रुप I", mr: "टीएनपीएससी ग्रुप I" },
+minEdu: { en: "Bachelor's degree", hi: "स्नातक डिग्री", mr: "पदवी" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "21–34 (Gen)", hi: "21–34 (सामान्य)", mr: "21–34 (सामान्य)" },
+body: { en: "TNPSC", hi: "टीएनपीएससी", mr: "टीएनपीएससी" },
+level: { en: "State", hi: "राज्य", mr: "राज्य" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "150/150/150/0/0/0",
+career: { en: "Deputy Collector", hi: "उपजिलाधिकारी", mr: "उपजिल्हाधिकारी" },
+link: "https://tnpsc.gov.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "RPSC RAS", hi: "आरपीएससी आरएएस", mr: "आरपीएससी आरएएस" },
+minEdu: { en: "Bachelor's degree", hi: "स्नातक डिग्री", mr: "पदवी" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "21–40 (Gen)", hi: "21–40 (सामान्य)", mr: "21–40 (सामान्य)" },
+body: { en: "RPSC", hi: "आरपीएससी", mr: "आरपीएससी" },
+level: { en: "State", hi: "राज्य", mr: "राज्य" },
+diff: { en: "Very High", hi: "अत्यधिक उच्च", mr: "अत्यंत उच्च" },
+fee: "350/350/350/250/250/250",
+career: { en: "SDM, DSP", hi: "एसडीएम, डीएसपी", mr: "एसडीएम, डीएसपी" },
+link: "https://rpsc.rajasthan.gov.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "BPSC CCE", hi: "बीपीएससी सीसीई", mr: "बीपीएससी सीसीई" },
+minEdu: { en: "Bachelor's degree", hi: "स्नातक डिग्री", mr: "पदवी" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "20–37 (Gen)", hi: "20–37 (सामान्य)", mr: "20–37 (सामान्य)" },
+body: { en: "BPSC", hi: "बीपीएससी", mr: "बीपीएससी" },
+level: { en: "State", hi: "राज्य", mr: "राज्य" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "600/600/600/150/150/150",
+career: { en: "SDM, DSP", hi: "एसडीएम, डीएसपी", mr: "एसडीएम, डीएसपी" },
+link: "https://bpsc.bihar.gov.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+}
+],
+// ➤ PROFESSIONAL
+professional: [
+{
+name: { en: "CA Foundation", hi: "सीए फाउंडेशन", mr: "सीए फाउंडेशन" },
+minEdu: { en: "12th (any stream)", hi: "12वीं (कोई भी स्ट्रीम)", mr: "12वी (कोणताही प्रवाह)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "ICAI", hi: "आईसीएआई", mr: "आयसीएआय" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "9200/9200/9200/9200/9200/9200",
+career: { en: "Chartered Accountant", hi: "चार्टर्ड अकाउंटेंट", mr: "चार्टर्ड अकाउंटंट" },
+link: "https://www.icai.org",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "CA Intermediate", hi: "सीए इंटरमीडिएट", mr: "सीए इंटरमीडिएट" },
+minEdu: { en: "CA Found./Grad", hi: "सीए फाउंडेशन/स्नातक", mr: "सीए फाउंडेशन/पदवी" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "ICAI", hi: "आईसीएआई", mr: "आयसीएआय" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Very High", hi: "अत्यधिक उच्च", mr: "अत्यंत उच्च" },
+fee: "18000/18000/18000/18000/18000/18000",
+career: { en: "Chartered Accountant", hi: "चार्टर्ड अकाउंटेंट", mr: "चार्टर्ड अकाउंटंट" },
+link: "https://www.icai.org",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "CSEET", hi: "सीएसईईटी", mr: "सीएसईईटी" },
+minEdu: { en: "12th pass", hi: "12वीं उत्तीर्ण", mr: "12वी उत्तीर्ण" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "ICSI", hi: "आईसीएसआई", mr: "आयसीएसआय" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium", hi: "मध्यम", mr: "मध्यम" },
+fee: "1000/1000/1000/1000/1000/1000",
+career: { en: "Company Secretary", hi: "कंपनी सचिव", mr: "कंपनी सचिव" },
+link: "https://www.icsi.edu",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "CMA Foundation", hi: "सीएमए फाउंडेशन", mr: "सीएमए फाउंडेशन" },
+minEdu: { en: "12th pass", hi: "12वीं उत्तीर्ण", mr: "12वी उत्तीर्ण" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "ICMAI", hi: "आईसीएमएआई", mr: "आयसीएमएआय" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium", hi: "मध्यम", mr: "मध्यम" },
+fee: "6000/6000/6000/6000/6000/6000",
+career: { en: "Cost Accountant", hi: "लागत लेखाकार", mr: "कॉस्ट अकाउंटंट" },
+link: "https://www.icmai.in",
+mode: { en: "Written", hi: "लिखित", mr: "लेखी" }
+},
+{
+name: { en: "CTET", hi: "सीटेट", mr: "सीटेट" },
+minEdu: { en: "Bachelor's + B.Ed", hi: "स्नातक + बी.एड", mr: "पदवी + बी.एड" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "CBSE", hi: "सीबीएसई", mr: "सीबीएसई" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "Medium", hi: "मध्यम", mr: "मध्यम" },
+fee: "1000/1000/1000/500/500/500",
+career: { en: "Teacher (Central)", hi: "शिक्षक (केंद्रीय)", mr: "शिक्षक (केंद्रीय)" },
+link: "https://ctet.nic.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "NIMCET (MCA)", hi: "एनआईएमसीईटी (एमसीए)", mr: "एनआयएमसीईटी (एमसीए)" },
+minEdu: { en: "Bachelor's degree", hi: "स्नातक डिग्री", mr: "पदवी" },
+minMarks: { en: "60% Gen", hi: "सामान्य 60%", mr: "सामान्य 60%" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "NITs", hi: "एनआईटी", mr: "एनआयटी" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "2500/2500/2500/1250/1250/1250",
+career: { en: "MCA / IT", hi: "एमसीए / आईटी", mr: "एमसीए / आयटी" },
+link: "https://nimcet.admissions.nic.in",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+},
+{
+name: { en: "ACET (Actuarial)", hi: "एसीईटी (एक्चुरियल)", mr: "एसीईटी (एक्चुरियल)" },
+minEdu: { en: "12th (Maths)", hi: "12वीं (गणित)", mr: "12वी (गणित)" },
+minMarks: { en: "Pass", hi: "उत्तीर्ण", mr: "उत्तीर्ण" },
+age: { en: "No age limit", hi: "कोई सीमा नहीं", mr: "मर्यादा नाही" },
+body: { en: "IAI", hi: "आईएआई", mr: "आयएआय" },
+level: { en: "National", hi: "राष्ट्रीय", mr: "राष्ट्रीय" },
+diff: { en: "High", hi: "उच्च", mr: "उच्च" },
+fee: "3000/3000/3000/3000/3000/3000",
+career: { en: "Actuary", hi: "एक्चुरियरी", mr: "एक्च्युअरी" },
+link: "https://actuariesindia.org",
+mode: { en: "Computer", hi: "कंप्यूटर", mr: "संगणक" }
+}
+]
+};
+// SHOW RESULTS BASED ON FILTERS
+function showResults() {
+goToStep('none');
+document.getElementById('step-results').classList.remove('hidden');
+const container = document.getElementById('results-container');
+container.innerHTML = '';
+const t = translations[currentLang];
+// Determine which streams to show
+const userStreams = selectedFilters.stream === 'any'
+? Object.keys(examGroups)
+: [selectedFilters.stream];
+let hasResults = false;
+for (const streamKey of userStreams) {
+const exams = examGroups[streamKey] || [];
+if (!exams.length) continue;
+// STRICT FILTERING LOGIC
+// Check against the English 'minEdu' string for reliability
+const filteredExams = exams.filter(exam => {
+const eduStr = exam.minEdu.en.toLowerCase();
+const selLevel = selectedFilters.level;
+if (selLevel === '12th') {
+// STRICT: Must mention 12th.
+// Exclude if it mentions "Bachelor" or "Grad" (mixed case handling)
+// Some exams like CA Foundation are "12th", so they appear here.
+return eduStr.includes("12th") && !eduStr.includes("10th");
+}
+if (selLevel === 'grad') {
+// STRICT: Must mention Bachelor, Degree, Graduation, or specific degrees like B.Tech/MBBS
+// Exclude Master's specific unless it's a dual option (rare here)
+// This filters out 12th/10th exams.
+const isGrad = eduStr.includes("bachelor") || eduStr.includes("degree") || eduStr.includes("grad") || eduStr.includes("b.tech") || eduStr.includes("engineering");
+const isPostGradOnly = eduStr.includes("master") && !eduStr.includes("bachelor");
+return isGrad && !isPostGradOnly;
+}
+if (selLevel === 'post_grad') {
+// STRICT: Must mention Master, Post Grad.
+// Or if the exam is specifically for PG levels (like SEBI Grade A allows Masters)
+return eduStr.includes("master") || eduStr.includes("post grad") || eduStr.includes("pg");
+}
+return false;
+});
+if (filteredExams.length > 0) {
+hasResults = true;
+const section = document.createElement('div');
+section.className = 'results-section';
+const title = document.createElement('h3');
+title.className = 'section-title';
+title.textContent = t.streams[streamKey] || streamKey;
+section.appendChild(title);
+const tableDiv = document.createElement('div');
+tableDiv.className = 'results-table-container';
+// Table headers
+const headers = t.table_headers.map(h => `<th>${h}</th>`).join('');
+// Table rows
+const rows = filteredExams.map(exam => {
+const dev = (str) => toDevanagari(str, currentLang);
+// Link Validation & Security Fix
+const isValidLink = exam.link && exam.link.startsWith('http');
+const linkHref = isValidLink ? exam.link : 'javascript:void(0)';
+const linkTarget = isValidLink ? '_blank' : '_self';
+const linkRel = isValidLink ? 'rel="noopener noreferrer"' : '';
+
+return `
+<tr>
+<td><div class="exam-name">${exam.name[currentLang]}</div></td>
+<td>${exam.minEdu[currentLang]}</td>
+<td>${dev(exam.minMarks[currentLang])}</td>
+<td>${dev(exam.age[currentLang])}</td>
+<td>${exam.body[currentLang]}</td>
+<td>${exam.level[currentLang]}</td>
+<td>${exam.diff[currentLang]}</td>
+<td>${formatFeeCell(parseFee(exam.fee), currentLang)}</td>
+<td>${exam.career[currentLang]}</td>
+<td>${exam.mode[currentLang]}</td>
+<td><a href="${linkHref}" target="${linkTarget}" ${linkRel} class="apply-btn">${t.apply_now}</a></td>
+</tr>
+`;
+}).join('');
+tableDiv.innerHTML = `<table><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table>`;
+section.appendChild(tableDiv);
+container.appendChild(section);
+}
+}
+if (!hasResults) {
+container.innerHTML = `<div style="text-align:center; padding:40px; color:#777;">${t.no_results}</div>`;
+}
+}
+// INITIALIZE ON LOAD
+document.addEventListener('DOMContentLoaded', () => {
+updateAllText();
+});
+</script>
+</body>
+</html>
